@@ -1,0 +1,1 @@
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><xsl:template match="/"><w:p><w:r><w:t>Demonstration report — <xsl:value-of select="/data/Invoice/Number"/></w:t></w:r></w:p></xsl:template></xsl:stylesheet>

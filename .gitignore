@@ -147,3 +147,11 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# FeraRender demo runtime, secrets and artifacts
+node_modules/
+dist/
+.env
+playwright-report/
+test-results/
+live-results/

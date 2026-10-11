@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Customer name",
+    "kind": "xpath",
+    "value": "/data/Person/Name"
+  },
+  {
+    "name": "Invoice date",
+    "kind": "xpath",
+    "value": "/data/Invoice/Date"
+  },
+  {
+    "name": "Invoice number",
+    "kind": "xpath",
+    "value": "/data/Invoice/Number"
+  },
+  {
+    "name": "Notes",
+    "kind": "xpath",
+    "value": "/data/Person/Notes"
+  },
+  {
+    "name": "Invoice paid",
+    "kind": "literal",
+    "value": "true"
+  },
+  {
+    "name": "Delivery",
+    "kind": "literal",
+    "value": "Email"
+  }
+]

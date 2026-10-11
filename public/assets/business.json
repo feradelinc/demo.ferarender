@@ -1,0 +1,39 @@
+{
+  "Firm": {
+    "Name": "Northstar Studio",
+    "Address": {
+      "Street": "42 Example Lane",
+      "City": "Boston",
+      "PostalCode": "02110"
+    }
+  },
+  "Person": {
+    "Name": "Alex Rivera",
+    "Email": "alex@example.test",
+    "MailingAddress": {
+      "Street": "7 Sample Avenue",
+      "City": "Cambridge"
+    },
+    "Notes": "Design & delivery — “thank you”",
+    "Optional": null
+  },
+  "Invoice": {
+    "Number": "DEMO-1042",
+    "Date": "2026-10-11",
+    "Total": 1250.5,
+    "Paid": true,
+    "Currency": "USD"
+  },
+  "LineItems": [
+    {
+      "Description": "Discovery",
+      "Quantity": 2,
+      "Price": 250
+    },
+    {
+      "Description": "Implementation",
+      "Quantity": 3,
+      "Price": 250.1666667
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+diff --git a/routes/api/v1/pdf.forms/service.js b/routes/api/v1/pdf.forms/service.js
+index e9b6192..b0ab00c 100644
+--- a/routes/api/v1/pdf.forms/service.js
++++ b/routes/api/v1/pdf.forms/service.js
+@@ -150,7 +150,8 @@ exports.make = async (req, res) => {
+                 content.transform_string = sax.transform({
+                     stylesheetInternal: sef,
+                     sourceText: xml,
+-                }).principalResult.toString();
++                    destination: "serialized",
++                }).principalResult;
+                 content.mappings = JSON.parse(content.transform_string);
+             } catch (error) {
+                 throw wrapStage("mapping transform", error);
+diff --git a/routes/api/v1/xml/service.js b/routes/api/v1/xml/service.js
+index 8f7b590..e1ea63d 100644
+--- a/routes/api/v1/xml/service.js
++++ b/routes/api/v1/xml/service.js
+@@ -15,9 +15,10 @@ exports.make = async (req) => {
+     const result = await sax.transform({
+         stylesheetInternal: sef,
+         sourceText: xml,
++        destination: "serialized",
+     });
+ 
+     return {
+-        result: result.principalResult.toString(),
++        result: result.principalResult,
+     };
+ }
+diff --git a/test/xslt-text-serialization.test.js b/test/xslt-text-serialization.test.js
+new file mode 100644
+--- /dev/null
++++ b/test/xslt-text-serialization.test.js
+@@ -0,0 +1,20 @@
++const test = require("node:test");
++const assert = require("node:assert/strict");
++const fs = require("node:fs");
++const path = require("node:path");
++const sax = require("../support/xslt/SaxonJS2N");
++
++test("serialized text output preserves JSON mapping values containing XML-sensitive characters", () => {
++    const xsl = '<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fn="http://www.w3.org/2005/xpath-functions"><xsl:output method="text"/><xsl:template match="/"><xsl:variable name="fields"><fn:map><fn:string key="Customer name"><xsl:value-of select="/data/name"/></fn:string></fn:map></xsl:variable><xsl:value-of select="fn:xml-to-json($fields/*)"/></xsl:template></xsl:stylesheet>';
++    const doc = sax.getPlatform().parseXmlFromString(xsl);
++    doc._saxonBaseUri = "file:///";
++    const options = { stylesheetInternal: sax.compile(doc), sourceText: '<data><name>A &amp; B &lt;C&gt; "quoted" \\ path\nUnicode 🙂</name></data>' };
++    // Regression: serializing a result tree with toString() escapes JSON text as XML.
++    assert.notEqual(JSON.parse(sax.transform(options).principalResult.toString())["Customer name"], 'A & B <C> "quoted" \\ path\nUnicode 🙂');
++    const actual = sax.transform({ ...options, destination: "serialized" }).principalResult;
++    assert.equal(JSON.parse(actual)["Customer name"], 'A & B <C> "quoted" \\ path\nUnicode 🙂');
++    for (const file of ["routes/api/v1/pdf.forms/service.js", "routes/api/v1/xml/service.js"]) {
++        const source = fs.readFileSync(path.join(__dirname, "..", file), "utf8");
++        assert.match(source, /destination:\s*"serialized"/);
++    }
++});

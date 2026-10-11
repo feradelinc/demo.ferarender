@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Customer name",
+    "type": "PDFTextField"
+  },
+  {
+    "name": "Invoice date",
+    "type": "PDFTextField"
+  },
+  {
+    "name": "Invoice number",
+    "type": "PDFTextField"
+  },
+  {
+    "name": "Notes",
+    "type": "PDFTextField"
+  },
+  {
+    "name": "Invoice paid",
+    "type": "PDFCheckBox"
+  },
+  {
+    "name": "Delivery",
+    "type": "PDFDropdown"
+  }
+]

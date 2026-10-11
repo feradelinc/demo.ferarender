@@ -1,0 +1,58 @@
+@auth = http://localhost:11000
+@render = http://localhost:11100
+@instance = REPLACE_WITH_NONPRODUCTION_INSTANCE
+@jwt = REPLACE_WITH_RETURNED_TOKEN
+@template = REPLACE_WITH_CREATED_TEMPLATE_UUID
+
+### Credentials are sent with the instance header. Capture response.token.
+POST {{auth}}/api/v1/auth
+Content-Type: application/json
+instance: {{instance}}
+
+{"email":"REPLACE_WITH_EMAIL","password":"REPLACE_WITH_PASSWORD"}
+
+### Reuse JWT, not an x-api-key
+GET {{render}}/api/v1/templates
+instance: {{instance}}
+x-auth-token: {{jwt}}
+
+### Dataset definition
+POST {{render}}/api/v1/datasets
+Content-Type: application/json
+instance: {{instance}}
+x-auth-token: {{jwt}}
+
+{"name":"demo-http-dataset","rootPath":"/data","schema":{},"sampleData":{"Person":{"Name":"Alex Rivera"}}}
+
+### Render saved package template with XML. Template creation examples are
+### generated from actual calls in the demo and examples/client.mjs.
+POST {{render}}/api/v1/docx
+Content-Type: application/json
+instance: {{instance}}
+x-auth-token: {{jwt}}
+
+{"owner":"{{instance}}","uuid":"{{template}}","xml":"<data><Person><Name>Alex Rivera</Name></Person></data>","metadata":true}
+
+### Form field discovery (encode PDF as base64; NOT multipart)
+POST {{render}}/api/v1/pdf/forms/fields
+Content-Type: application/json
+instance: {{instance}}
+x-auth-token: {{jwt}}
+
+{"form":"REPLACE_WITH_BASE64_PDF"}
+
+### Populate saved form wrapper; body contentType selects response mode
+POST {{render}}/api/v1/pdf/forms
+Content-Type: application/json
+instance: {{instance}}
+x-auth-token: {{jwt}}
+
+{"owner":"{{instance}}","uuid":"{{template}}","xml":"<data><Person><Name>Alex Rivera</Name></Person></data>","contentType":"application/json"}
+
+### Direct XSLT transformation is distinct from local JSON serialization
+POST {{render}}/api/v1/xml
+Content-Type: application/json
+instance: {{instance}}
+x-auth-token: {{jwt}}
+
+{"xml":"<data><name>Alex</name></data>","xsl":"<xsl:stylesheet version=\"3.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\"><xsl:output method=\"text\"/><xsl:template match=\"/\"><xsl:value-of select=\"/data/name\"/></xsl:template></xsl:stylesheet>"}

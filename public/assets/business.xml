@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <Firm>
+    <Name>Northstar Studio</Name>
+    <Address>
+      <Street>42 Example Lane</Street>
+      <City>Boston</City>
+      <PostalCode>02110</PostalCode>
+    </Address>
+  </Firm>
+  <Person>
+    <Name>Alex Rivera</Name>
+    <Email>alex@example.test</Email>
+    <MailingAddress>
+      <Street>7 Sample Avenue</Street>
+      <City>Cambridge</City>
+    </MailingAddress>
+    <Notes>Design &amp; delivery — “thank you”</Notes>
+    <Optional />
+  </Person>
+  <Invoice>
+    <Number>DEMO-1042</Number>
+    <Date>2026-10-11</Date>
+    <Total>1250.5</Total>
+    <Paid>true</Paid>
+    <Currency>USD</Currency>
+  </Invoice>
+  <LineItems>
+    <Description>Discovery</Description>
+    <Quantity>2</Quantity>
+    <Price>250</Price>
+  </LineItems>
+  <LineItems>
+    <Description>Implementation</Description>
+    <Quantity>3</Quantity>
+    <Price>250.1666667</Price>
+  </LineItems>
+</data>

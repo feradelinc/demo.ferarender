@@ -1,0 +1,1 @@
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"><xsl:output method="text"/><xsl:template match="/">Invoice <xsl:value-of select="/data/Invoice/Number"/> for <xsl:value-of select="/data/Person/Name"/></xsl:template></xsl:stylesheet>
